@@ -1,0 +1,100 @@
+html {
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-image: radial-gradient(#0d0844, #8facf7 );
+    font-family: 'Roboto', sans-serif
+}
+
+.display {
+    display: block;
+}
+
+.hide {
+    display: none;
+}
+
+.feature {
+    background-color: rgb(244, 244, 244, .85);
+    padding: 10px;
+    margin: 5px auto;
+    border: 3px solid #2a06ce;
+    border-radius: 10px;
+    overflow: hidden;
+    width: 30%;
+  }
+
+.roverPhoto {
+    width: 250px;
+    margin: 10px;
+}
+
+.APODContent {
+    margin: auto;
+}
+
+.center {
+    margin: auto;
+    text-align: center;
+}
+
+#APODSummary {
+    background-color: rgb(244, 244, 244, .85);
+    padding: 10px;
+    margin: auto;
+    border-radius: 10px;
+    overflow: hidden;
+    width: 70%;
+    border: 3px solid #000;
+}
+
+#asteroidDiv {
+    width: 40%;
+}
+
+#APODImage {
+    margin: 5px;
+    max-width: 100%;
+}
+
+#marsDiv {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+}
+
+#bottomWrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.aboutWrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+.APODButtons {
+    display: flex;
+    flex-direction: row;
+}
+
+#marsPhotos {
+    display: flex;
+    flex-direction: row;
+}
+
+#marsButtons {
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+}
+
+.greyOut {
+    opacity: 0.6;
+}
+
+.footer {
+    flex-shrink: 0;
+}
