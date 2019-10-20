@@ -1,0 +1,19 @@
+{
+  "name": "space_project_public",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "comma-number": "^2.0.1",
+    "env-cmd": "^10.0.1",
+    "express": "^4.17.1",
+    "hbs": "^4.0.6",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4"
+  }
+}
