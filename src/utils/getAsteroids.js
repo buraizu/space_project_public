@@ -3,7 +3,7 @@ const rp = require('request-promise')
 require('dotenv').config()
 
 const getAsteroids = (date, callback) => {
-    console.log(`process.env.API_KEY from getAsteroids: ${process.env.API_KEY}`)
+    console.log(`Keys of process.env from getAsteroids: ${Object.keys(process.env)}`)
     const regex = /^\d{4}-{1}\d{2}-{1}\d{2}$/
 
     const options = {
