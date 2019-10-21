@@ -2,7 +2,7 @@ const rp = require('request-promise')
 require('dotenv').config()
 
 const getAPOD = (date, callback) => {
-
+    console.log(`process from getAPOD: ${process}`)
     const options = {
         uri: `https://api.nasa.gov/planetary/apod?date=${date}&api_key=${process.env.API_KEY}`,
         headers: {
