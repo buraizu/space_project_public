@@ -212,10 +212,11 @@ submitButtons.forEach((button) => {
                         marsHeadline.className = 'hide'
                     }
                     if(data.asteroids) {
+                        asteroidsList.innerHTML = ""
                         asteroidDiv.className = 'feature display'
                         asteroidMessage.className = 'display'
                         asteroidMessage.textContent = `${data.asteroids.length} asteroids on their closest approach to Earth on ${data.date}`
-                        asteroidDiv.appendChild(makeAsteroidsList(data.asteroids))
+                        asteroidsList.appendChild(makeAsteroidsList(data.asteroids))
                     } else {
                         asteroidDiv.className = 'hide'
                     }
@@ -328,6 +329,7 @@ getPrevMarsPhoto.addEventListener('click', () => {
 
 const makeAsteroidsList = (asteroids) => {
     const list = document.createElement('ul')
+    
     for(let i = 0; i < asteroids.length; i++) {
         let item = document.createElement('li')
         

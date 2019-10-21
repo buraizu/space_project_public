@@ -1,8 +1,7 @@
 const rp = require('request-promise')
-require('dotenv').config()
 
 const getMarsPhotos = (date, callback) => {
-    console.log(`process from getMarsPhotos: ${process}`)
+    
     const options = {
         uri: `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?earth_date=${date}&camera=NAVCAM&api_key=${process.env.API_KEY}`,
         headers: {
