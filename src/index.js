@@ -4,6 +4,7 @@ const hbs = require('hbs')
 const commaNumber = require('comma-number')
 const AWSXRay = require('aws-xray-sdk')
 
+require('dotenv').config()
 const getMarsPhotos = require('./utils/getMarsPhotos')
 const getAsteroids = require('./utils/getAsteroids')
 const getAPOD = require('./utils/getAPOD')
