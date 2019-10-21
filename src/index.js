@@ -2,6 +2,7 @@ const path = require('path')
 const express = require('express')
 const hbs = require('hbs')
 const commaNumber = require('comma-number')
+const AWSXRay = require('aws-xray-sdk')
 
 const getMarsPhotos = require('./utils/getMarsPhotos')
 const getAsteroids = require('./utils/getAsteroids')
