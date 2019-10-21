@@ -5,6 +5,7 @@ const commaNumber = require('comma-number')
 const AWSXRay = require('aws-xray-sdk')
 
 require('dotenv').config()
+console.log(`COWABUNGA process.env.API_KEY from index.js: ${process.env.API_KEY}`)
 const getMarsPhotos = require('./utils/getMarsPhotos')
 const getAsteroids = require('./utils/getAsteroids')
 const getAPOD = require('./utils/getAPOD')
