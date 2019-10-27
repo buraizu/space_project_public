@@ -129,25 +129,21 @@ app.get('/space-info', async (req, res) => {
     
 })
 
-app.get('/about', (req, res) => {
-    res.render('about', {
-        title: 'About Page',
-        name: 'Bryce Eadie'
-    })
-})
+// app.get('/about', (req, res) => {
+//     res.render('about', {
+//         title: 'About Page',
+//         name: 'Bryce Eadie'
+//     })
+// })
 
-app.get('/help', (req, res) => {
-    res.render('help', {
-        title: 'Help Page',
-        name: 'Bryce Eadie'
-    })
-})
+// app.get('/help', (req, res) => {
+//     res.render('help', {
+//         title: 'Help Page',
+//         name: 'Bryce Eadie'
+//     })
+// })
 
-app.post('/imageUpload', (req, res) => {
-    console.log('in app.post')
-    console.log(`req.body in app.post: `, req.body)
-    // console.log(`req in app.post: `, req)
-})
+
 
 // router.post('/tasks', auth, async (req, res) => {
     
@@ -157,20 +153,6 @@ app.post('/imageUpload', (req, res) => {
 //         ...req.body,
 //         owner: req.user._id
 //     })
-
-//     try {
-//         await task.save()
-//         res.status(201).send(task)
-//     } catch(e) {
-//         res.status(418).send(e)
-//     }
-
-//     // task.save().then(() => {
-//     //     res.status(201).send(task)
-//     // }).catch((e) => {
-//     //     res.status(418).send(e)
-//     // })
-// })
 
 app.listen(port, () => {
     console.log(`Server is up on port ${port}`)
