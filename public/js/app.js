@@ -137,6 +137,7 @@ submitButtons.forEach((button) => {
                             getAPODSummary.className = 'display APODContent'
                             getAPODSummary.textContent = 'Show Explanation'
                             hdAPODLink.className = 'hide'
+                            saveToS3.className = 'hide'
                         } else if(data.APOD.media_type === 'image') {
                             iframeDiv.className = 'hide'
                             iframe.src = ''
@@ -149,13 +150,14 @@ submitButtons.forEach((button) => {
                             getAPODSummary.textContent = 'Show Explanation'
                             hdAPODLink.href = data.APOD.hdurl
                             hdAPODLink.className = 'hide'
-                            saveToS3.className = 'display'
+                            saveToS3.className = 'display center'
                         } else {
                             APODTitle.innerHTML = `Sorry, no Astronomy Picture of the Day is available for ${data.date}. NASA launched APOD on June 16, 1995, so try another date between then and now.`
                             APODImage.src = ''
                             APODSummary.className = 'hide'
                             APODSummary.innerHTML = ''
                             hdAPODLink.className = 'hide'
+                            saveToS3.className = 'hide'
                         }
                         if(data.APOD.copyright) {
                             APODCopyright.innerHTML = `&copy; ${data.APOD.copyright}`
@@ -379,6 +381,7 @@ function addPhoto() {
         },
         body: JSON.stringify(photoURL)
     }).then((response) => {
+        alert(`Your image was saved to ${albumBucketName}`)
         console.log(`response: ${response.body}`)
     })
 }
