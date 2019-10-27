@@ -5,7 +5,7 @@ const commaNumber = require('comma-number')
 const AWSXRay = require('aws-xray-sdk')
 
 require('dotenv').config()
-console.log(`COWABUNGA process.env.API_KEY from index.js: ${process.env.API_KEY}`)
+
 const getMarsPhotos = require('./utils/getMarsPhotos')
 const getAsteroids = require('./utils/getAsteroids')
 const getAPOD = require('./utils/getAPOD')
@@ -17,7 +17,8 @@ const publicDirectoryPath = path.join(__dirname, '../public')
 const viewsPath = path.join(__dirname, '../templates/views')
 const partialsPath = path.join(__dirname, '../templates/partials')
 
-app.set('view engine', 'hbs')
+// app.set('view engine', 'hbs')
+app.use(express.static(__dirname + '../public'));
 app.set('views', viewsPath)
 hbs.registerPartials(partialsPath)
 
@@ -82,6 +83,7 @@ app.get('/space-info', async (req, res) => {
                         if(error) {
                             return res.send({ error })
                         } else {
+                            APOD.crossOrigin = "anonymous"
                             theAPOD = APOD
                         }
                         
@@ -130,6 +132,35 @@ app.get('/help', (req, res) => {
         name: 'Bryce Eadie'
     })
 })
+
+app.post('/imageUpload', (req, res) => {
+    console.log('in app.post')
+    console.log(`req.body in app.post: `, req.body)
+    // console.log(`req in app.post: `, req)
+})
+
+// router.post('/tasks', auth, async (req, res) => {
+    
+//     // const task = new Task(req.body)
+    
+//     const task = new Task({
+//         ...req.body,
+//         owner: req.user._id
+//     })
+
+//     try {
+//         await task.save()
+//         res.status(201).send(task)
+//     } catch(e) {
+//         res.status(418).send(e)
+//     }
+
+//     // task.save().then(() => {
+//     //     res.status(201).send(task)
+//     // }).catch((e) => {
+//     //     res.status(418).send(e)
+//     // })
+// })
 
 app.listen(port, () => {
     console.log(`Server is up on port ${port}`)

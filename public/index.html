@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+        <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="/css/styles.css">
+        <title>Solar System Update</title>
+        <script src="https://sdk.amazonaws.com/js/aws-sdk-2.556.0.min.js"></script>
+        
+    </head>
+    <body>
+        
+        <h3 id="date" class="hide"></h3>
+            
+        <form action="" class="center feature">
+            <h3>Check the NASA Astronomy Picture of the Day, info on local asteroids, and photos from the Mars Curiosity Rover!</h3>
+            <p>Valid date range for NASA APOD: 1995-06-16 - present</p>
+            <input type="text" placeholder="YYYY-MM-DD">
+            <button class="submitButton">Get Info</button>
+            <button id="getCurrentDay" class="submitButton">Today</button>
+            <div id="APODButtons" class="hide">
+                <button id="getPrevDay" class="submitButton">Previous Day</button>
+                <button id="getNextDay" class="submitButton">Next Day</button>
+                
+            </div>
+        </form>
+            
+        <div id="topWrapper">
+            <div id="loadingDiv" class="hide"></div>
+            <div id="APODDiv" class="center">
+                <p id="APODTitle"></p>
+                <img id="APODImage"  class="APODContent" src="" alt="">
+                <div id="iframeDiv">
+                    <iframe id="iframe" src="" crossorigin="anonymous" frameborder="0" height="600" width="700"></iframe>
+                </div>
+                <p id="APODCopyright"></p>
+                <button id="saveToS3" class="hide">Save to S3</button>
+            </div>
+        </div>
+            
+        <div>
+            <button id="getAPODSummary" class="hide">Hide Explanation</button>
+            <p id="APODSummary" class="hide"></p>
+            <a href="" id="hdAPODLink" class="hide" target="_blank">View Image in HD</a>
+        </div>
+
+        <div id="bottomWrapper">
+
+            <div id="asteroidDiv" class="hide">
+                <h3 id="asteroidMessage" class="hide"></h3>
+                <div id="asteroidsList"></div>
+            </div>
+            
+            <div id="marsDiv" class="center hide">
+                <h2 id="marsMessage" class="hide"></h2>
+                <h2 id="marsHeadline" class="hide">Photos from Curiosity Rover NAVCAM</h2>
+                <div id="marsPhotos" class="center">
+                    <img id="photo-1" class="hide" src="" alt="Mars Photo">
+                    <img id="photo-2" class="hide" src="" alt="Mars Photo">
+                    <img id="photo-3" class="hide" src="" alt="Mars Photo">
+                </div>
+                <div id="marsButtons" class="center">
+                    <button id="getPrevMarsPhoto" class="marsButton hide"><--</button>
+                    <span>   </span><span id="pageCounter"></span><span>   </span>
+                    <button id="getNextMarsPhoto" class="marsButton hide">--></button>
+                </div>
+            </div>
+            
+        </div>
+
+        
+        <script src="/js/app.js"></script>
+        <canvas id="myCanvas"></canvas>
+    </body>
+
+</html>

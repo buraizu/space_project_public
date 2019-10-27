@@ -35,6 +35,10 @@ const marsButtons = document.getElementById("marsButtons")
 const pageCounter = document.getElementById("pageCounter")
 const hdAPODLink = document.getElementById("hdAPODLink")
 
+
+const imageUploadURL = `https://bdjxzhkjm8.execute-api.us-east-1.amazonaws.com/dev/upload`
+const saveToS3 = document.getElementById("saveToS3")
+
 let theMarsPhotos
 let date
 let currentIndex
@@ -44,6 +48,8 @@ let finalIndex
 let currentPage
 let fullPages
 let photoNumber
+let bucketName = 'space-pics-'
+let bucketID = 2
 
 submitButtons.forEach((button) => {
     button.addEventListener('click', (e) => {
@@ -97,133 +103,138 @@ submitButtons.forEach((button) => {
             APODButtons.className = 'display' // Check this
         }
         APODTitle.innerHTML = '<h2 style="color:#FFF;">Loading...</h2>'
-        
-        fetch(`/space-info?date=${date}`).then((response) => {
-            response.json().then((data) => {
-                if(data.error) {
-                    search.value = ''
-                    APODTitle.innerHTML = `<h3>${data.error}</h3>`
-                    APODImage.src = ''
-                    iframe.src = ''
-                    APODSummary.className = 'hide'
-                    APODCopyright.className = 'hide'
-                    asteroidDiv.className = 'hide'
-                    photo1.className = 'hide'
-                    photo2.className = 'hide'
-                    photo3.className = 'hide'
-                    getPrevMarsPhoto.className = 'hide'
-                    getNextMarsPhoto.className = 'hide'
-                    pageCounter.className = 'hide'
-                    getAPODSummary.className = 'hide'
-                    marsMessage.className = 'hide'
-                } else {
-                    displayDate.innerHTML = data.date
-                    displayDate.className = 'feature display center APODContent'
-                    if(data.APOD.media_type === 'video') {
-                        iframeDiv.className = 'display APODContent'
-                        iframe.src = data.APOD.url
-    
+        try {
+            fetch(`/space-info?date=${date}`).then((response) => {
+                response.json().then((data) => {
+                    if(data.error) {
+                        search.value = ''
+                        APODTitle.innerHTML = `<h3>${data.error}</h3>`
                         APODImage.src = ''
-                        APODTitle.innerHTML = `<h2>Astronomy Video of the Day</h2><h3>${data.APOD.title}</h3>`
-                        APODTitle.className = 'feature APODContent'
-                        APODSummary.className = 'hide'
-                        APODSummary.innerHTML = data.APOD.explanation
-                        getAPODSummary.className = 'display APODContent'
-                        getAPODSummary.textContent = 'Show Explanation'
-                        hdAPODLink.className = 'hide'
-                    } else if(data.APOD.media_type === 'image') {
-                        iframeDiv.className = 'hide'
                         iframe.src = ''
-                        APODImage.src = data.APOD.url
-                        APODTitle.innerHTML = `<h3>Astronomy Picture of the Day</h3><h2>${data.APOD.title}</h2>`
-                        APODTitle.className = 'feature APODContent'
                         APODSummary.className = 'hide'
-                        APODSummary.innerHTML = data.APOD.explanation
-                        getAPODSummary.className = 'display APODContent'
-                        getAPODSummary.textContent = 'Show Explanation'
-                        hdAPODLink.href = data.APOD.hdurl
-                        hdAPODLink.className = 'hide'
-                    } else {
-                        APODTitle.innerHTML = `Sorry, no Astronomy Picture of the Day is available for ${data.date}. NASA launched APOD on June 16, 1995, so try another date between then and now.`
-                        APODImage.src = ''
-                        APODSummary.className = 'hide'
-                        APODSummary.innerHTML = ''
-                        hdAPODLink.className = 'hide'
-                    }
-                    if(data.APOD.copyright) {
-                        APODCopyright.innerHTML = `&copy; ${data.APOD.copyright}`
-                        APODCopyright.className = 'feature APODContent'
-                    } else {
                         APODCopyright.className = 'hide'
-                    }
-                    if(data.marsPhotos) {
-                        marsDiv.className = 'center feature'
-                        theMarsPhotos = data.marsPhotos
-                        marsMessage.className = 'hide'
-                        marsHeadline.className = 'display'
-                        photoNumber = data.marsPhotos.length
-                        currentIndex = 0
-                        firstIndex = 0
-                        finalIndex = data.marsPhotos.length - 1
-                        currentPage = 1
-                        fullPages = Math.floor(photoNumber / 3)
-                        photo1.src = data.marsPhotos[0].img_src
-                        photo1.className = 'display roverPhoto'
-                        if(data.marsPhotos[1]) {
-                            photo2.src = data.marsPhotos[1].img_src
-                            photo2.className = 'display roverPhoto'
-                        } else {
-                            photo2.src = ''
-                            photo2.className = 'hide'
-                        }
-                        if(data.marsPhotos[2]) {
-                            photo3.src = data.marsPhotos[2].img_src
-                            photo3.className = 'display roverPhoto'
-                        } else {
-                            photo3.src = ''
-                            photo3.className = 'hide'
-                        }
-                       if(!fullPages) {
-                           getNextMarsPhoto.className = 'hide'
-                           getPrevMarsPhoto.className = 'hide'
-                           pageCounter.innerHTML = `Page ${currentPage} of ${fullPages || 1}`
-                           pageCounter.className = 'display marsButton'
-                       } else {
-                           getNextMarsPhoto.className = 'display'
-                           getPrevMarsPhoto.className = 'greyOut'
-                           if(photoNumber % 3 !== 0) {
-                               pageCounter.innerHTML = `Page ${currentPage} of ${fullPages + 1 || 1}`
-                               pageCounter.className = 'display marsButton'
-                           } else {
-                               pageCounter.innerHTML = `Page ${currentPage} of ${fullPages || 1}`
-                               pageCounter.className = 'display marsButton'
-                           }
-                       }
-                        
-                    } else {
+                        asteroidDiv.className = 'hide'
                         photo1.className = 'hide'
                         photo2.className = 'hide'
                         photo3.className = 'hide'
                         getPrevMarsPhoto.className = 'hide'
                         getNextMarsPhoto.className = 'hide'
                         pageCounter.className = 'hide'
-                        marsMessage.textContent = `There are no photos from Curiosity rover for ${data.date}.`
-                        marsMessage.className = 'feature display'
-                        marsHeadline.className = 'hide'
-                    }
-                    if(data.asteroids) {
-                        asteroidsList.innerHTML = ""
-                        asteroidDiv.className = 'feature display'
-                        asteroidMessage.className = 'display'
-                        asteroidMessage.textContent = `${data.asteroids.length} asteroids on their closest approach to Earth on ${data.date}`
-                        asteroidsList.appendChild(makeAsteroidsList(data.asteroids))
+                        getAPODSummary.className = 'hide'
+                        marsMessage.className = 'hide'
                     } else {
-                        asteroidDiv.className = 'hide'
+                        displayDate.innerHTML = data.date
+                        displayDate.className = 'feature display center APODContent'
+                        if(data.APOD.media_type === 'video') {
+                            iframeDiv.className = 'display APODContent'
+                            iframe.src = data.APOD.url
+        
+                            APODImage.src = ''
+                            APODTitle.innerHTML = `<h2>Astronomy Video of the Day</h2><h3>${data.APOD.title}</h3>`
+                            APODTitle.className = 'feature APODContent'
+                            APODSummary.className = 'hide'
+                            APODSummary.innerHTML = data.APOD.explanation
+                            getAPODSummary.className = 'display APODContent'
+                            getAPODSummary.textContent = 'Show Explanation'
+                            hdAPODLink.className = 'hide'
+                        } else if(data.APOD.media_type === 'image') {
+                            iframeDiv.className = 'hide'
+                            iframe.src = ''
+                            APODImage.src = data.APOD.url
+                            APODTitle.innerHTML = `<h3>Astronomy Picture of the Day</h3><h2>${data.APOD.title}</h2>`
+                            APODTitle.className = 'feature APODContent'
+                            APODSummary.className = 'hide'
+                            APODSummary.innerHTML = data.APOD.explanation
+                            getAPODSummary.className = 'display APODContent'
+                            getAPODSummary.textContent = 'Show Explanation'
+                            hdAPODLink.href = data.APOD.hdurl
+                            hdAPODLink.className = 'hide'
+                            saveToS3.className = 'display'
+                        } else {
+                            APODTitle.innerHTML = `Sorry, no Astronomy Picture of the Day is available for ${data.date}. NASA launched APOD on June 16, 1995, so try another date between then and now.`
+                            APODImage.src = ''
+                            APODSummary.className = 'hide'
+                            APODSummary.innerHTML = ''
+                            hdAPODLink.className = 'hide'
+                        }
+                        if(data.APOD.copyright) {
+                            APODCopyright.innerHTML = `&copy; ${data.APOD.copyright}`
+                            APODCopyright.className = 'feature APODContent'
+                        } else {
+                            APODCopyright.className = 'hide'
+                        }
+                        if(data.marsPhotos) {
+                            marsDiv.className = 'center feature'
+                            theMarsPhotos = data.marsPhotos
+                            marsMessage.className = 'hide'
+                            marsHeadline.className = 'display'
+                            photoNumber = data.marsPhotos.length
+                            currentIndex = 0
+                            firstIndex = 0
+                            finalIndex = data.marsPhotos.length - 1
+                            currentPage = 1
+                            fullPages = Math.floor(photoNumber / 3)
+                            photo1.src = data.marsPhotos[0].img_src
+                            photo1.className = 'display roverPhoto'
+                            if(data.marsPhotos[1]) {
+                                photo2.src = data.marsPhotos[1].img_src
+                                photo2.className = 'display roverPhoto'
+                            } else {
+                                photo2.src = ''
+                                photo2.className = 'hide'
+                            }
+                            if(data.marsPhotos[2]) {
+                                photo3.src = data.marsPhotos[2].img_src
+                                photo3.className = 'display roverPhoto'
+                            } else {
+                                photo3.src = ''
+                                photo3.className = 'hide'
+                            }
+                           if(!fullPages) {
+                               getNextMarsPhoto.className = 'hide'
+                               getPrevMarsPhoto.className = 'hide'
+                               pageCounter.innerHTML = `Page ${currentPage} of ${fullPages || 1}`
+                               pageCounter.className = 'display marsButton'
+                           } else {
+                               getNextMarsPhoto.className = 'display'
+                               getPrevMarsPhoto.className = 'greyOut'
+                               if(photoNumber % 3 !== 0) {
+                                   pageCounter.innerHTML = `Page ${currentPage} of ${fullPages + 1 || 1}`
+                                   pageCounter.className = 'display marsButton'
+                               } else {
+                                   pageCounter.innerHTML = `Page ${currentPage} of ${fullPages || 1}`
+                                   pageCounter.className = 'display marsButton'
+                               }
+                           }
+                            
+                        } else {
+                            photo1.className = 'hide'
+                            photo2.className = 'hide'
+                            photo3.className = 'hide'
+                            getPrevMarsPhoto.className = 'hide'
+                            getNextMarsPhoto.className = 'hide'
+                            pageCounter.className = 'hide'
+                            marsMessage.textContent = `There are no photos from Curiosity rover for ${data.date}.`
+                            marsMessage.className = 'feature display'
+                            marsHeadline.className = 'hide'
+                        }
+                        if(data.asteroids) {
+                            asteroidsList.innerHTML = ""
+                            asteroidDiv.className = 'feature display'
+                            asteroidMessage.className = 'display'
+                            asteroidMessage.textContent = `${data.asteroids.length} asteroids on their closest approach to Earth on ${data.date}`
+                            asteroidsList.appendChild(makeAsteroidsList(data.asteroids))
+                        } else {
+                            asteroidDiv.className = 'hide'
+                        }
+        
                     }
-    
-                }
+                })
             })
-        })
+        } catch(e) {
+            console.log(`in catch statement of try fetch `, e)
+        }
+
     })
 })
 
@@ -342,4 +353,122 @@ const makeAsteroidsList = (asteroids) => {
 
     return list
 }
+
+var albumBucketName = "space-pics-2";
+var bucketRegion = "us-east-1";
+var IdentityPoolId = "us-east-1:9325ca10-a908-44ed-a9c5-676b55f052c0";
+
+AWS.config.update({
+  region: bucketRegion,
+  credentials: new AWS.CognitoIdentityCredentials({
+    IdentityPoolId: IdentityPoolId
+  })
+});
+
+// var s3 = new AWS.S3({
+//   apiVersion: "2006-03-01",
+//   params: { Bucket: albumBucketName }
+// });
+
+function addPhoto() {
+    
+    var image = APODImage.src
+    console.log(`image: ${image}`)
+    var photoKey = APODImage.src;
+
+    // function getBase64Image(img) {
+    //     var canvas = document.getElementById("myCanvas");
+    //     canvas.width = img.width;
+    //     canvas.height = img.height;
+    //     var ctx = canvas.getContext("2d");
+    //     ctx.drawImage(img, 0, 0);
+    //     var dataURL = canvas.toDataURL("image/png");
+    //     return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+    // }
+      
+    //   var base64 = getBase64Image(image);
+
+    // const bucketParams = {
+    //     Bucket: `${bucketName}${++bucketID}`,
+    //     ACL : 'public-read'
+    // }
+
+    // const s3 = new AWS.S3({apiVersion: '2006-03-01'});
+
+    // var params = {Bucket: `${bucketName}${++bucketID}`, Key: `${bucketName}${++bucketID}`, Body: image};
+    // s3.upload(params, function(err, data) {
+    //     console.log(err, data);
+    // });
+
+    // s3.createBucket(bucketParams, (err, data) => {
+    //     if(err) {
+    //         console.log(`err: `, err)
+    //     } else {
+    //         console.log(`successfully created bucket ${bucketName}${bucketID}`)
+    //     }
+    // })
+
+    // Use S3 ManagedUpload class as it supports multipart uploads
+    var upload = new AWS.S3.ManagedUpload({
+        params: {
+          Bucket: albumBucketName,
+          Key: photoKey,
+          Body: image,
+          ACL: "public-read"
+        }
+    });
+
+    // var promise = upload.promise();
+  
+    // promise.then(
+    //   function(data) {
+    //     alert("Successfully uploaded photo.");
+    //   },
+    //   function(err) {
+    //       console.log('err: ', err)
+    //     return alert("There was an error uploading your photo: ", err.message);
+    //   }
+    // );
+
+    // curl -H "Content-type: application/json" -d '{"photoUrl":"https://apod.nasa.gov/apod/image/1910/Barnard150Seahorse.jpg"}' 'https://bdjxzhkjm8.execute-api.us-east-1.amazonaws.com/dev/upload'
+    // -H = header
+    // -d = data
+    
+    const fetchURL = 'https://bdjxzhkjm8.execute-api.us-east-1.amazonaws.com/dev/upload'
+    const photoURL = {"photoUrl":"https://apod.nasa.gov/apod/image/1910/cheshirecat_chandra_complg_1024.jpg"}
+    fetch(fetchURL, {
+        method: "POST",
+        mode: 'no-cors',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(photoURL)
+    }).then((response) => {
+        console.log(`response: ${response.body}`)
+    })
+}
+  
+
+// const sendImageToS3 = (url) => {
+//   fetch("/imageUpload", {
+//       method: 'POST',
+//       mode: 'cors',
+//       cache: 'no-cache',
+//       credentials: 'same-origin',
+//       headers: {
+//           'Content-Type': 'application/json'
+//       },
+//       redirect: 'follow', // manual, *follow, error
+//       referrer: 'no-referrer', // no-referrer, *client
+//       body: url // body data type must match "Content-Type" header
+//   })
+// }
+
+saveToS3.addEventListener('click', () => {
+    addPhoto()
+})
+
+  
+
+
 
