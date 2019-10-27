@@ -129,31 +129,6 @@ app.get('/space-info', async (req, res) => {
     
 })
 
-// app.get('/about', (req, res) => {
-//     res.render('about', {
-//         title: 'About Page',
-//         name: 'Bryce Eadie'
-//     })
-// })
-
-// app.get('/help', (req, res) => {
-//     res.render('help', {
-//         title: 'Help Page',
-//         name: 'Bryce Eadie'
-//     })
-// })
-
-
-
-// router.post('/tasks', auth, async (req, res) => {
-    
-//     // const task = new Task(req.body)
-    
-//     const task = new Task({
-//         ...req.body,
-//         owner: req.user._id
-//     })
-
 app.listen(port, () => {
     console.log(`Server is up on port ${port}`)
 })
