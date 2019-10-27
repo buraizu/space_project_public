@@ -1,7 +1,7 @@
 const path = require('path')
 const express = require('express')
 const bodyParser = require('body-parser')
-const cors = require('cors')
+
 const hbs = require('hbs')
 const commaNumber = require('comma-number')
 const AWSXRay = require('aws-xray-sdk')

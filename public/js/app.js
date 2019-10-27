@@ -365,77 +365,12 @@ AWS.config.update({
   })
 });
 
-// var s3 = new AWS.S3({
-//   apiVersion: "2006-03-01",
-//   params: { Bucket: albumBucketName }
-// });
-
 function addPhoto() {
     
-    var image = APODImage.src
-    console.log(`image: ${image}`)
-    var photoKey = APODImage.src;
+    const photoKey = APODImage.src;
 
-    // function getBase64Image(img) {
-    //     var canvas = document.getElementById("myCanvas");
-    //     canvas.width = img.width;
-    //     canvas.height = img.height;
-    //     var ctx = canvas.getContext("2d");
-    //     ctx.drawImage(img, 0, 0);
-    //     var dataURL = canvas.toDataURL("image/png");
-    //     return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
-    // }
-      
-    //   var base64 = getBase64Image(image);
-
-    // const bucketParams = {
-    //     Bucket: `${bucketName}${++bucketID}`,
-    //     ACL : 'public-read'
-    // }
-
-    // const s3 = new AWS.S3({apiVersion: '2006-03-01'});
-
-    // var params = {Bucket: `${bucketName}${++bucketID}`, Key: `${bucketName}${++bucketID}`, Body: image};
-    // s3.upload(params, function(err, data) {
-    //     console.log(err, data);
-    // });
-
-    // s3.createBucket(bucketParams, (err, data) => {
-    //     if(err) {
-    //         console.log(`err: `, err)
-    //     } else {
-    //         console.log(`successfully created bucket ${bucketName}${bucketID}`)
-    //     }
-    // })
-
-    // Use S3 ManagedUpload class as it supports multipart uploads
-    var upload = new AWS.S3.ManagedUpload({
-        params: {
-          Bucket: albumBucketName,
-          Key: photoKey,
-          Body: image,
-          ACL: "public-read"
-        }
-    });
-
-    // var promise = upload.promise();
-  
-    // promise.then(
-    //   function(data) {
-    //     alert("Successfully uploaded photo.");
-    //   },
-    //   function(err) {
-    //       console.log('err: ', err)
-    //     return alert("There was an error uploading your photo: ", err.message);
-    //   }
-    // );
-
-    // curl -H "Content-type: application/json" -d '{"photoUrl":"https://apod.nasa.gov/apod/image/1910/Barnard150Seahorse.jpg"}' 'https://bdjxzhkjm8.execute-api.us-east-1.amazonaws.com/dev/upload'
-    // -H = header
-    // -d = data
-    
     const fetchURL = 'https://bdjxzhkjm8.execute-api.us-east-1.amazonaws.com/dev/upload'
-    const photoURL = {"photoUrl":"https://apod.nasa.gov/apod/image/1910/cheshirecat_chandra_complg_1024.jpg"}
+    const photoURL = {"photoUrl":APODImage.src}
     fetch(fetchURL, {
         method: "POST",
         mode: 'no-cors',
@@ -447,22 +382,6 @@ function addPhoto() {
         console.log(`response: ${response.body}`)
     })
 }
-  
-
-// const sendImageToS3 = (url) => {
-//   fetch("/imageUpload", {
-//       method: 'POST',
-//       mode: 'cors',
-//       cache: 'no-cache',
-//       credentials: 'same-origin',
-//       headers: {
-//           'Content-Type': 'application/json'
-//       },
-//       redirect: 'follow', // manual, *follow, error
-//       referrer: 'no-referrer', // no-referrer, *client
-//       body: url // body data type must match "Content-Type" header
-//   })
-// }
 
 saveToS3.addEventListener('click', () => {
     addPhoto()
