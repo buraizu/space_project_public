@@ -1,8 +1,16 @@
 const path = require('path')
 const express = require('express')
+const bodyParser = require('body-parser')
+const cors = require('cors')
 const hbs = require('hbs')
 const commaNumber = require('comma-number')
 const AWSXRay = require('aws-xray-sdk')
+const AWS = require('aws-sdk')
+const fs = require('fs')
+const s3 = new AWS.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+})
 
 require('dotenv').config()
 
@@ -22,6 +30,8 @@ app.use(express.static(__dirname + '../public'));
 app.set('views', viewsPath)
 hbs.registerPartials(partialsPath)
 
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static(publicDirectoryPath))
 
 app.get('', (req, res) => {
