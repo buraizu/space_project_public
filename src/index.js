@@ -4,9 +4,9 @@ const bodyParser = require('body-parser')
 
 const hbs = require('hbs')
 const commaNumber = require('comma-number')
-const AWSXRay = require('aws-xray-sdk')
+
 const AWS = require('aws-sdk')
-const fs = require('fs')
+
 const s3 = new AWS.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
@@ -22,13 +22,10 @@ const app = express()
 const port = process.env.PORT || 3000
 
 const publicDirectoryPath = path.join(__dirname, '../public')
-const viewsPath = path.join(__dirname, '../templates/views')
-const partialsPath = path.join(__dirname, '../templates/partials')
 
-// app.set('view engine', 'hbs')
+app.set('view engine', 'hbs')
 app.use(express.static(__dirname + '../public'));
-app.set('views', viewsPath)
-hbs.registerPartials(partialsPath)
+
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
