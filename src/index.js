@@ -8,6 +8,13 @@ const commaNumber = require('comma-number')
 var StatsD = require('node-dogstatsd').StatsD;
 var dogstatsd = new StatsD();
 
+var dd_options = {
+    'response_code':true,
+    'tags': ['app:my_app']
+      }
+  
+var connect_datadog = require('connect-datadog')(dd_options);
+
 // Increment a counter.
 dogstatsd.increment('page.views')
 
@@ -30,6 +37,7 @@ const port = process.env.PORT || 3000
 const publicDirectoryPath = path.join(__dirname, '../public')
 
 app.set('view engine', 'hbs')
+app.use(connect_datadog);
 app.use(express.static(__dirname + '../public'));
 
 
