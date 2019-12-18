@@ -5,15 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "env-cmd node src/index.js"
+    "start": "node src/index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.553.0",
     "aws-xray-sdk": "^2.4.0",
     "comma-number": "^2.0.1",
     "dotenv": "^8.2.0",
-    "env-cmd": "^10.0.1",
     "express": "^4.17.1",
     "hbs": "^4.0.6",
     "request": "^2.88.0",

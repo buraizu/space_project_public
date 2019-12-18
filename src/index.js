@@ -1,11 +1,32 @@
 const path = require('path')
 const express = require('express')
+const bodyParser = require('body-parser')
+
 const hbs = require('hbs')
 const commaNumber = require('comma-number')
-const AWSXRay = require('aws-xray-sdk')
+
+var StatsD = require('node-dogstatsd').StatsD;
+var dogstatsd = new StatsD();
+
+var dd_options = {
+    'response_code':true,
+    'tags': ['app:my_app']
+      }
+  
+var connect_datadog = require('connect-datadog')(dd_options);
+
+// Increment a counter.
+dogstatsd.increment('page.views')
+
+const AWS = require('aws-sdk')
+
+const s3 = new AWS.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+})
 
 require('dotenv').config()
-console.log(`COWABUNGA process.env.API_KEY from index.js: ${process.env.API_KEY}`)
+
 const getMarsPhotos = require('./utils/getMarsPhotos')
 const getAsteroids = require('./utils/getAsteroids')
 const getAPOD = require('./utils/getAPOD')
@@ -14,13 +35,14 @@ const app = express()
 const port = process.env.PORT || 3000
 
 const publicDirectoryPath = path.join(__dirname, '../public')
-const viewsPath = path.join(__dirname, '../templates/views')
-const partialsPath = path.join(__dirname, '../templates/partials')
 
 app.set('view engine', 'hbs')
-app.set('views', viewsPath)
-hbs.registerPartials(partialsPath)
+app.use(connect_datadog);
+app.use(express.static(__dirname + '../public'));
 
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static(publicDirectoryPath))
 
 app.get('', (req, res) => {
@@ -82,6 +104,7 @@ app.get('/space-info', async (req, res) => {
                         if(error) {
                             return res.send({ error })
                         } else {
+                            APOD.crossOrigin = "anonymous"
                             theAPOD = APOD
                         }
                         
@@ -115,20 +138,6 @@ app.get('/space-info', async (req, res) => {
         }
     }
     
-})
-
-app.get('/about', (req, res) => {
-    res.render('about', {
-        title: 'About Page',
-        name: 'Bryce Eadie'
-    })
-})
-
-app.get('/help', (req, res) => {
-    res.render('help', {
-        title: 'Help Page',
-        name: 'Bryce Eadie'
-    })
 })
 
 app.listen(port, () => {

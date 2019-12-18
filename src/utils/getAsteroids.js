@@ -1,5 +1,6 @@
 const request = require('request')
 const rp = require('request-promise')
+require('dotenv').config()
 
 const getAsteroids = (date, callback) => {
     
